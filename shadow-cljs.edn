@@ -1,0 +1,15 @@
+{:source-paths
+ ["src" "test" "examples"]
+
+ :dependencies
+ [[binaryage/devtools "0.9.7"]
+  [devcards "0.2.5"]]
+
+ :builds {:examples {:target :browser
+                     :output-dir "public/examples/js"
+                     :asset-path "/js"
+                     :modules {:main {:entries [hiccup-tag.examples]}}
+                     :compiler-options {:devcards true}
+                     :devtools {:http-root    "public/examples"
+                                :http-port    8800
+                                :preloads     [devtools.preload]}}}}
