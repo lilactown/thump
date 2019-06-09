@@ -3,10 +3,19 @@
             [hiccup-tag.react]
             ["react" :as react]))
 
+;;
+;; Boilerplate
+;;
+
 (defn ^:dev/after-load start []
   (dc/start-devcard-ui!))
 
 (defn ^:export init [] (start))
+
+
+;;
+;; Examples
+;;
 
 (dc/defcard basic
   #hiccup/react [:div "hello"])
