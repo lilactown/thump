@@ -158,7 +158,8 @@ Then we can tell the reader to merge our dynamically created map with the `&` pr
 The value at the key `&` will be merged into the resulting props object at 
 runtime so that we can do this kind of dynamic props creation.
 
-Keys are merged where the ones created dynamically take precedence. For example:
+Keys are merged in such a way where the values in the map created dynamically
+take precedence. For example:
 
 ```clojure
 (let [props {:style {:color "red"}}]
