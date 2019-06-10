@@ -163,13 +163,65 @@ Keys are merged where the ones created dynamically take precedence. For example:
 ```clojure
 (let [props {:style {:color "red"}}]
   #h/r [:div {:style {:color "blue"}
-              :on-click #(js/alert "hi")
-              & props} "foo"])
+              :on-click #(js/alert "hi") & props}
+              "foo"])
 ```
 
 Results in props `#js {:style #js {:color "red"} :onClick #(js/alert)}` being
 passed in to React.
 
-# License
+### Nested hiccup
+
+Often, our hiccup is not just one layer deep. We often want to write a tree of
+elements like:
+
+```html
+<div>
+  <div><label>Name: <input type="text" /></label></div>
+  <div><button type="submit">Submit</button></div>
+</div>
+```
+
+For convenience, if the reader encounters a nested vector literal within a hiccup
+form, it will treat it as a child element and read it just like another hiccup
+form. This means we can write the above without repeating the `#h/r` tag over and
+over:
+
+```clojure
+#h/r [:div
+      [:div [:label "Name: " [:input {:type "text"}]]]
+      [:div [:button {:type "submit"} "Submit"]]]
+```
+
+However, the hiccup reader will not continue to walk inside of anything but a
+vector. If we need to insert parens into the form in order to do something more
+dynamic we'll have to ensure that we return a React element ourselves.
+
+The following **will throw an error**:
+
+```clojure
+#h/r [:div
+      [:div "The condition is:"]
+      (if condition
+        [:div "TRUE"]
+        [:div "FALSE"])]
+```
+
+To fix it, we make sure our dynamic children are read as hiccup as well by 
+tagging them:
+
+```clojure
+#h/r [:div
+      [:div "The condition is:"]
+      (if condition
+        #h/r [:div "TRUE"]
+        #h/r [:div "FALSE"])]
+```
+
+This is the case for any other kind of form like `for`, `cond`, `map`, etc.
+
+
+
+## License
 
 EPL 2.0 Licensed. Copyright Will Acton.
