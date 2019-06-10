@@ -63,7 +63,7 @@ tags, they probbaly won't work
 We can then start creating React elements:
 
 ```clojure
-#h/r [:div "foo"]
+#hiccup/react [:div "foo"]
 ;; Executes => (react/createElement "div" nil "foo")
 ```
 
