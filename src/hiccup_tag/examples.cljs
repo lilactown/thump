@@ -12,6 +12,11 @@
 
 (defn ^:export init [] (start))
 
+(when (exists? js/Symbol)
+  (extend-protocol IPrintWithWriter
+    js/Symbol
+    (-pr-writer [sym writer _]
+      (-write writer (str "\"" (.toString sym) "\"")))))
 
 ;;
 ;; Examples
@@ -31,6 +36,11 @@
 (dc/defcard basic-props
   #h/r [:div {:style {:background "purple"}}
         [:button {:on-click #(js/alert "hi")} "say hello"]])
+
+(dc/defcard dynamic-props
+  (let [props {:style {:background "red" :color "yellow"}}]
+    #h/r [:div {;; :style {:background "purple"}
+                & props} "asdf"]))
 
 (dc/defcard lazy-seq-and-binding
   ;; we have to tag children that are bound dynamically

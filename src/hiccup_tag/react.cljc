@@ -37,8 +37,9 @@
     [(-> k (keyword->str) (camel-case*)) v]))
 
 #?(:cljs (defn merge-obj+map [obj m]
-           (doseq [[k v] m]
-             (gobj/set obj (keyword->str k) v))))
+           (doseq [[k v] (map map-entry->obj-entry m)]
+             (gobj/set obj k v))
+           obj))
 
 (defn props->obj [m]
   ;; need to special case `style` as well
