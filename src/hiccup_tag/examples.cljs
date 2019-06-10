@@ -33,14 +33,29 @@
   ;; we don't need to tag static children
   #h/r [:div [:span "hi"] " " [:span "bye"]])
 
+(dc/defcard more-nested
+  ;; we don't need to tag static children
+  #h/r [:div
+        [:div {:style {:color "green"}}
+         [:span "hi"]]
+        " "
+        [:div [:h4 "bye" [:span {:style {:color "red"}} "bye"]]]])
+
 (dc/defcard basic-props
   #h/r [:div {:style {:background "purple"}}
         [:button {:on-click #(js/alert "hi")} "say hello"]])
 
 (dc/defcard dynamic-props
   (let [props {:style {:background "red" :color "yellow"}}]
-    #h/r [:div {;; :style {:background "purple"}
+    #h/r [:div {:on-click #(js/alert "static")
                 & props} "asdf"]))
+
+(dc/defcard classes
+  #h/r [:<>
+        [:style ".a { color: green; } .b { background: purple; }"]
+        [:div {:class "a"} "green"]
+        [:div {:class "b"} "purple"]
+        [:div {:class ["a" "b"]} "gross"]])
 
 (dc/defcard lazy-seq-and-binding
   ;; we have to tag children that are bound dynamically

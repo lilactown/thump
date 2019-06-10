@@ -32,8 +32,13 @@
   (case k
     :style ["style" #?(:clj `(~'clj->js ~v) ;; could maybe do this recursively at read
                        :cljs (clj->js v))]
-    :class ["className" #?(:clj `(->> ~v (remove nil?) (str/join " "))
-                           :cljs (->> v (remove nil?) (str/join " ")))]
+    :class ["className" #?(:clj (if (string? v)
+                                  v
+                                  `(->> ~v (remove nil?) (str/join " ")))
+                           :cljs (if (string? v)
+                                   v
+                                   (->> v (remove nil?) (str/join " "))))]
+    :for ["htmlFor" v]
     [(-> k (keyword->str) (camel-case*)) v]))
 
 #?(:cljs (defn merge-obj+map [obj m]
@@ -56,6 +61,15 @@
 
 (declare react-from-reader)
 
+(def element-list
+  #?(:clj {:<> 'react/Fragment}
+     :cljs {:<> react/Fragment}))
+
+(defn keyword->element [k]
+  (if-let [el (get element-list k)]
+    el
+    (keyword->str k)))
+
 (defn maybe-read-child [c]
   (if (vector? c)
     (react-from-reader c)
@@ -71,7 +85,7 @@
   (if-not (vector? vec)
     (throw (ex-info (str vec " is not a valid hiccup vector.") {}))
     (let [[el props & children] vec
-          el (if (keyword? el) (keyword->str el) el)
+          el (if (keyword? el) (keyword->element el) el)
           props? (map? props)
           children (cond
                      (and props? (seq children)) children
