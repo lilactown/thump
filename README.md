@@ -107,7 +107,7 @@ Example of special cases:
             :style {:color "green"}
             :for "thing"}]
 ;; => (react/createElement "div"
-;;                         (js-obj "class" "foo bar"
+;;                         (js-obj "className" "foo bar"
 ;;                                 "style" (clj->js {:color "green"})
 ;;                                 "htmlFor" "thing"))
 ```
