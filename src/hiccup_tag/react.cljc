@@ -78,8 +78,8 @@
 (defn create-element [el props children]
   #?(:clj `(react/createElement ~el ~props ~@(map maybe-read-child children))
      :cljs (react/createElement el props (if (= 0 (count children))
-                                           (first children)
-                                           (apply array children)))))
+                                           (maybe-read-child (first children))
+                                           (apply array (map maybe-read-child children))))))
 
 (defn react-from-reader [vec]
   (if-not (vector? vec)
@@ -94,6 +94,9 @@
                      true nil)
           props (if props? (props->obj props) nil)]
       (create-element el props children))))
+
+#?(:cljs (do (cljs.reader/register-tag-parser! 'hiccup/react react-from-reader)
+             (cljs.reader/register-tag-parser! 'h/r react-from-reader)))
 
 (comment
   (react-from-reader [:div "foo" "bar"])

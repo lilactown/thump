@@ -67,3 +67,25 @@
           ;; we also have to tag children that are generated dynamically
           (for [n [1 2 3 4 5]]
             #h/r [:li {:key n} n])]))
+
+(dc/defcard from-read-string
+  #h/r [:div
+        (cljs.reader/read-string
+         "#hiccup/react [:div {:style {:border \"1px solid #eee\"}}
+                         [:span {:style {:color \"green\"}} \"from reader!\"]]")
+        (cljs.reader/read-string
+         "#h/r [:<>
+                [:style \".a2 { color: green; } .b2 { background: purple; }\"]
+                [:div {:class \"a2\"} \"green\"]
+                [:div {:class \"b2\"} \"purple\"]
+                [:div {:class [\"a2\" \"b2\"]} \"gross\"]]")
+        (try (cljs.reader/read-string
+              "#h/r [:div {& props} \"asdf\"]")
+             (catch js/Error e
+               #h/r [:div {:style {:color (if (= (ex-message e) "props is not ISeqable")
+                                            "green"
+                                            "red")}}
+                     (str "Dynamic props doesn't work: " (ex-message e) " "
+                          (if (= (ex-message e) "props is not ISeqable")
+                            "✅"
+                            "🚫"))]))])
