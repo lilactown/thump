@@ -1,4 +1,4 @@
-(defproject lilactown/hiccup-tag "0.0.1"
+(defproject lilactown/hiccup-tag "0.0.2"
   :description "A library for parsing hiccup forms using reader tagged literals."
   :url "https://github.com/Lokeh/hiccup-tag"
   :license {:name "Eclipse Public License"
