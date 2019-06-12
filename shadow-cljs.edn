@@ -8,7 +8,7 @@
  :builds {:examples {:target :browser
                      :output-dir "public/examples/js"
                      :asset-path "/js"
-                     :modules {:main {:entries [hiccup-tag.examples]}}
+                     :modules {:main {:entries [hiccup-next.examples]}}
                      :compiler-options {:devcards true}
                      :devtools {:http-root    "public/examples"
                                 :http-port    8800

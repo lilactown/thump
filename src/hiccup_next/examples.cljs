@@ -1,6 +1,5 @@
-(ns hiccup-tag.examples
+(ns hiccup-next.examples
   (:require [devcards.core :as dc :include-macros true]
-            [hiccup-next.core :include-macros true]
             [hiccup-next.react :as r :refer [hiccup-element]]))
 
 
