@@ -14,7 +14,7 @@
       (if (or (empty? words)
               (= "aria" first-word)
               (= "data" first-word))
-        s
+        (name s)
         (-> (map str/capitalize words)
             (conj first-word)
             str/join)))
@@ -30,16 +30,16 @@
 
 (defn map-entry->obj-entry [[k v]]
   (case k
-    :style ["style" #?(:clj `(~'clj->js ~v) ;; could maybe do this recursively at read
-                       :cljs (clj->js v))]
-    :class ["className" #?(:clj (if (string? v)
-                                  v
-                                  `(->> ~v (remove nil?) (str/join " ")))
+    :style ["style" #?(:clj `(~'clj->js ~v :keyword-fn camel-case*)
+                       :cljs (clj->js v :keyword-fn camel-case*))]
+    :class ["className" #?(:clj `(if (string? ~v) ~v
+                                     (->> ~v (remove nil?) (str/join " ")))
                            :cljs (if (string? v)
                                    v
                                    (->> v (remove nil?) (str/join " "))))]
     :for ["htmlFor" v]
     [(-> k (keyword->str) (camel-case*)) v]))
+
 
 #?(:cljs (defn merge-obj+map [obj m]
            (doseq [[k v] (map map-entry->obj-entry m)]
@@ -47,7 +47,6 @@
            obj))
 
 (defn props->obj [m]
-  ;; need to special case `style` as well
   (if (contains? m '&)
     #?(:clj `(merge-obj+map (~'js-obj ~@(mapcat map-entry->obj-entry (dissoc m '&)))
                             ~(get m '&))
