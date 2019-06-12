@@ -73,11 +73,11 @@
 (defmacro hiccup-element [el props children]
   `(create-element ~(get @custom-els el el) ~(props->obj props) ~@children))
 
-(defn hiccup-element [el props children]
-  (apply react/createElement
-         (get @custom-els el el)
-         (props->obj props)
-         children))
+#?(:cljs (defn hiccup-element [el props children]
+           (apply react/createElement
+                  (get @custom-els el el)
+                  (props->obj props)
+                  children)))
 
 #?(:cljs (defn interpret [vec]
            (binding [hiccup-next.core/*hiccup-element* hiccup-element]

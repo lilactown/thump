@@ -2,8 +2,6 @@
 
 ## UNDER CONSTRUCTION
 
-[![Clojars Project](https://img.shields.io/clojars/v/lilactown/hiccup-tag.svg)](https://clojars.org/lilactown/hiccup-tag)
-
 A library for parsing hiccup forms using reader tagged literals. Currently supports React.
 
 ```clojure
