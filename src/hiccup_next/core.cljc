@@ -9,16 +9,17 @@
 
       (str kw-ns "/" kw-name))))
 
-(declare parse*)
+(defn ^:dynamic *hiccup-element* [el props children]
+  `(~'hiccup-element ~el ~props ~children))
+
+(declare interpret)
 
 (defn maybe-parse-child [c]
   (if (vector? c)
-    (parse* c)
+    (interpret c)
     c))
 
-(def ^:dynamic *hiccup-element*)
-
-(defn parse* [vec]
+(defn interpret [vec]
   (if-not (vector? vec)
     (throw (ex-info (str vec " is not a valid hiccup vector.") {}))
     (let [[el props & children] vec
@@ -32,18 +33,11 @@
           props (if props?
                   props
                   nil)]
-      #?(:clj `(~'hiccup-element ~el ~props ~(map maybe-parse-child children))
-         :cljs (*hiccup-element* el props (map maybe-parse-child children))))))
+      (*hiccup-element* el props (doall (map maybe-parse-child children))))))
 
 (defmacro compile [vec]
-  (parse* vec))
-
-(defn from-reader [vec]
-  (parse* vec))
+  (interpret vec))
 
 #?(:cljs
-   (do (cljs.reader/register-tag-parser! 'hiccup/next from-reader)
-       (cljs.reader/register-tag-parser! 'h/n from-reader)))
-
-(defn interpret [vec]
-  (parse* vec))
+   (do (cljs.reader/register-tag-parser! 'hiccup/next interpret)
+       (cljs.reader/register-tag-parser! 'h/n interpret)))

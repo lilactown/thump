@@ -64,7 +64,7 @@
 
 (def custom-els
   (atom {"<>" #?(:clj `Fragment
-                :cljs react/Fragment)}))
+                 :cljs react/Fragment)}))
 
 (defmacro register-element! [el component]
   (swap! custom-els assoc (keyword->str el) component)

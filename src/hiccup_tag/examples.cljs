@@ -101,16 +101,13 @@
   (hiccup-next.core/compile
    [:div
     "foo"
-    [:button {:on-click #(js/alert "bar")} "uwu"]]))
+    [:button {:on-click #(js/alert "baz")} "bar"]]))
 
-(dc/defcard interpreter
+(dc/defcard runtime-interpreter
   (r/interpret [:div
                 "foo"
-                [:button {:on-click #(js/alert "bar")} "uwu"]]))
+                [:button {:on-click #(js/alert "baz")} "bar"]]))
 
 (dc/defcard custom-element
   (do (r/register-element! :foo (fn [_] "foo"))
-
-      r/custom-els
-
       #h/n [:foo]))
