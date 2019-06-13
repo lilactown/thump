@@ -2,3 +2,4 @@ public/examples/js
 /.nrepl-port
 .shadow-cljs/
 node_modules/
+public/benchmark/js/
