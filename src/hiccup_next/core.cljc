@@ -1,4 +1,5 @@
 (ns hiccup-next.core
+  #?(:cljs (:require [cljs.reader]))
   (:refer-clojure :exclude [compile]))
 
 (defn keyword->str [k]
@@ -33,7 +34,7 @@
           props (if props?
                   props
                   nil)]
-      (*hiccup-element* el props (doall (map maybe-parse-child children))))))
+      (*hiccup-element* el props (map maybe-parse-child children)))))
 
 (defmacro compile [vec]
   (interpret vec))

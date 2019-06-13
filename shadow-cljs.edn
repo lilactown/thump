@@ -12,4 +12,10 @@
                      :compiler-options {:devcards true}
                      :devtools {:http-root    "public/examples"
                                 :http-port    8800
-                                :preloads     [devtools.preload]}}}}
+                                :preloads     [devtools.preload]}}
+          :benchmark-browser {:target :browser
+                              :output-dir "public/benchmark/js"
+                              :asset-path "/js"
+                              :modules {:main {:entries [hiccup-next.benchmark]}}
+                              :devtools {:http-root "public/benchmark"
+                                         :http-port    8801}}}}
