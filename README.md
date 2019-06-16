@@ -5,6 +5,10 @@
 A library for parsing hiccup forms using reader tagged literals. Currently supports React.
 
 ```clojure
+(ns my-app.core
+  (:require [hiccup-next.core]
+            [hiccup-next.react :refer [hiccup-element]]))
+
 (defn Mycomponent [props]
   (let [name (goog.object/get props "name")]
     #h/n [:div {:style {:color "green"}}
@@ -43,35 +47,44 @@ type at runtime.
 
 ## Usage
 
-`hiccup-next` exports two reader tags at the moment: `hiccup/react`, which turns
-hiccup literals into React `createElement` function calls, and `h/n`, which is
-a shortened alias of `hiccup/react`.
+`hiccup-next` exports two reader tags at the moment: `hiccup/next`, which parses
+hiccup literals, and `h/n`, which is a shortened alias of `hiccup/next`.
 
-In order to use it, you must require the `hiccup-next.react` namespace as well
-as the React library as the symbol `react`:
+In order to use it, you must require the `hiccup-next.core` namespace at the top
+level of your application:
 
 ```clojure
 (ns my-app.core
-  (:require [hiccup-next.react]
-            ["react" :as react]
+  (:require [hiccup-next.core]
             ...))
 ```
 
-This will ensure the reader tags are registered with the ClojureScript compiler,
-as well as include the functions our hiccup tags will compile to in our namespace.
-If you do not include these two namespaces in files that are using the reader
-tags, they probbaly won't work
+This will ensure the reader tags are registered with the ClojureScript compiler.
+
+### With React
+
+`hiccup-next` is meant to be a general purpose hiccup syntax parsing library. An
+example implementation of a React extension is included with the library under
+the `hiccup-next.react` namespace.
+
+In order to use hiccup to create React elements, simply include the namespace
+and **refer the `hiccup-element` var**:
+
+```
+(my-app.feature
+  (:require [hiccup-next.react :refer [hiccup-element]]))
+```
 
 We can then start creating React elements:
 
 ```clojure
-#hiccup/react [:div "foo"]
+#hiccup/next [:div "foo"]
 ;; Executes => (react/createElement "div" nil "foo")
 ```
 
 ### Elements
 
-Elements in the first position of a `hiccup/react` / `h/n`-tagged form are
+Elements in the first position of a `hiccup/next` / `h/n`-tagged form are
 expected to be one of the following:
 
 - A keyword representing a DOM element: `:div`, `:span`, `:h1`, `:article`
