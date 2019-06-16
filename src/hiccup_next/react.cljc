@@ -51,10 +51,10 @@
   (if (contains? m '&)
     #?(:clj `(merge-obj+map (~'js-obj ~@(mapcat map-entry->obj-entry (dissoc m '&)))
                             ~(get m '&))
-       :cljs (merge-obj+map (apply js-obj (mapcat map-entry->obj-entry (dissoc m '&)))
+       :cljs (merge-obj+map (apply gobj/create (mapcat map-entry->obj-entry (dissoc m '&)))
                             (get m '&)))
     #?(:clj `(~'js-obj ~@(mapcat map-entry->obj-entry m))
-       :cljs (apply js-obj (mapcat map-entry->obj-entry m)))))
+       :cljs (apply gobj/create (mapcat map-entry->obj-entry m)))))
 
 (def create-element
   #?(:clj (fn [& xs] xs)

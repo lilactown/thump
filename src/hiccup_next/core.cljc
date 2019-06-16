@@ -24,13 +24,19 @@
   (if-not (vector? vec)
     (throw (ex-info (str vec " is not a valid hiccup vector.") {}))
     (let [[el props & children] vec
+          ;; el (nth vec 0 nil)
+          ;; xs (rest vec)
+          ;; props (nth xs 0 nil)
+          ;; children (-rest xs)
+
+          ;; interpret
           el (if (keyword? el) (keyword->str el) el)
           props? (map? props)
+          children? (not (nil? (seq children)))
           children (cond
-                     (and props? (seq children)) children
-                     (and (not props?) (seq children)) (cons props children)
-                     (not props?) (list props)
-                     true nil)
+                     (and props? children?) children
+                     children? (cons props children)
+                     true (list props))
           props (if props?
                   props
                   nil)]
