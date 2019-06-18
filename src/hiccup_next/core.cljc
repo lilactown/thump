@@ -32,7 +32,8 @@
           children (cond
                      (and props? children?) children
                      children? (cons props children)
-                     true nil)
+                     props? '()
+                     true (list props))
           props (if props?
                   props
                   nil)]
