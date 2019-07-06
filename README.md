@@ -11,13 +11,13 @@ A library for parsing hiccup forms using reader tagged literals. Currently suppo
 
 (defn Mycomponent [props]
   (let [name (goog.object/get props "name")]
-    #h/n [:div {:style {:color "green"}}
+    #h/e [:div {:style {:color "green"}}
           [:span "Hello, " name]
           [:ul
            (for [n (range 10)]
-             #h/n [:li {:key n} n])]]))
+             #h/e [:li {:key n} n])]]))
 
-(react-dom/render #h/n [MyComponent {:name "Sydney"}]
+(react-dom/render #h/e [MyComponent {:name "Sydney"}]
                   (. js/document getElementById "app"))
 ```
 
@@ -47,8 +47,8 @@ type at runtime.
 
 ## Usage
 
-`thump` exports two reader tags at the moment: `hiccup/next`, which parses
-hiccup literals, and `h/n`, which is a shortened alias of `hiccup/next`.
+`thump` exports two reader tags at the moment: `hiccup/element`, which parses
+hiccup literals, and `h/e`, which is a shortened alias of `hiccup/element`.
 
 In order to use it, you must require the `thump.core` namespace at the top
 level of your application:
@@ -78,13 +78,13 @@ and **refer the `hiccup-element` var**:
 We can then start creating React elements:
 
 ```clojure
-#hiccup/next [:div "foo"]
+#hiccup/element [:div "foo"]
 ;; Executes => (react/createElement "div" nil "foo")
 ```
 
 ### Elements
 
-Elements in the first position of a `hiccup/next` / `h/n`-tagged form are
+Elements in the first position of a `hiccup/element` / `h/e`-tagged form are
 expected to be one of the following:
 
 - A keyword representing a DOM element: `:div`, `:span`, `:h1`, `:article`
@@ -104,7 +104,7 @@ Clojure data will be left alone. Keys are converted from kebab-case to camelCase
 Example:
 
 ```clojure
-#h/n [:div {:id "thing-1" :some-prop {:foo #{'bar "baz"}}}]
+#h/e [:div {:id "thing-1" :some-prop {:foo #{'bar "baz"}}}]
 ;; => (react/createElement "div"
 ;;                         (js-obj "id" "thing-1"
 ;;                                 "someProp" {:foo #{'bar "baz"}}))
@@ -118,7 +118,7 @@ There are 3 exceptions to this:
 Example of special cases:
 
 ```clojure
-#h/n [:div {:class ["foo" "bar"]
+#h/e [:div {:class ["foo" "bar"]
             :style {:color "green"}
             :for "thing"}]
 ;; => (react/createElement "div"
@@ -134,7 +134,7 @@ following **will throw an error**:
 
 ```clojure
 (let [props {:style {:color "red"}}]
-  #h/n [:div props "foo"])
+  #h/e [:div props "foo"])
 ```
 
 When the tag reader encounters `props` in the hiccup form, it assumes it is a
@@ -149,7 +149,7 @@ The only way to tell the tag reader to treat `props` as, well, props, is to
 write it literally within the hiccup form:
 
 ```clojure
-#h/n [:div {:style {:color "red"}} "foo"]
+#h/e [:div {:style {:color "red"}} "foo"]
 ```
 
 But **what if we want to assign them dynamically?** For example, we want to
@@ -167,7 +167,7 @@ Then we can tell the reader to merge our dynamically created map with the `&` pr
 (let [props (if condition
               {:style {:color "red"}}
               {:style {:color "green"}})]
-  #h/n [:div {& props} "foo"])
+  #h/e [:div {& props} "foo"])
 ```
 
 The value at the key `&` will be merged into the resulting props object at 
@@ -178,7 +178,7 @@ take precedence. For example:
 
 ```clojure
 (let [props {:style {:color "red"}}]
-  #h/n [:div {:style {:color "blue"}
+  #h/e [:div {:style {:color "blue"}
               :on-click #(js/alert "hi") & props}
               "foo"])
 ```
@@ -200,11 +200,11 @@ elements like:
 
 For convenience, if the reader encounters a nested vector literal within a hiccup
 form, it will treat it as a child element and read it just like another hiccup
-form. This means we can write the above without repeating the `#h/n` tag over and
+form. This means we can write the above without repeating the `#h/e` tag over and
 over:
 
 ```clojure
-#h/n [:div
+#h/e [:div
       [:div [:label "Name: " [:input {:type "text"}]]]
       [:div [:button {:type "submit"} "Submit"]]]
 ```
@@ -216,7 +216,7 @@ dynamic we'll have to ensure that we return a React element ourselves.
 The following **will throw an error**:
 
 ```clojure
-#h/n [:div
+#h/e [:div
       [:div "The condition is:"]
       (if condition
         [:div "TRUE"]
@@ -227,11 +227,11 @@ To fix it, we make sure our dynamic children are read as hiccup as well by
 tagging them:
 
 ```clojure
-#h/n [:div
+#h/e [:div
       [:div "The condition is:"]
       (if condition
-        #h/n [:div "TRUE"]
-        #h/n [:div "FALSE"])]
+        #h/e [:div "TRUE"]
+        #h/e [:div "FALSE"])]
 ```
 
 This is the case for any other kind of form like `for`, `cond`, `map`, etc.
