@@ -213,7 +213,7 @@ However, the hiccup reader will not continue to walk inside of anything but a
 vector. If we need to insert parens into the form in order to do something more
 dynamic we'll have to ensure that we return a React element ourselves.
 
-The following **will throw an error**:
+The following **will probably throw a runtime error**:
 
 ```clojure
 #h/e [:div
