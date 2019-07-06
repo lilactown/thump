@@ -1,9 +1,9 @@
-(ns hiccup-next.benchmark
+(ns thumps.benchmark
   (:require
    ["react" :as react :rename {createElement rce}]
    ["react-dom/server" :as rdom]
    ["benchmark" :as benchmark]
-   [hiccup-next.react :as r :refer [hiccup-element]]
+   [thumps.react :as r :refer [hiccup-element]]
    [cljs.reader]))
 
 (defn react-render [{:keys [title body]}]
@@ -25,7 +25,7 @@
           [:button "cancel"]]]])
 
 (defn macro-render [{:keys [title body]}]
-  (hiccup-next.core/compile
+  (thumps.core/compile
    [:div {:class "card"}
     [:div {:class "card-title"} title]
     [:div {:class "card-body"} body]
@@ -45,7 +45,7 @@
       [:button "cancel"]]]]))
 
 (defn runtime-reader-render [{:keys [title body]}]
-  (binding [hiccup-next.core/*hiccup-element* hiccup-element]
+  (binding [thumps.core/*hiccup-element* hiccup-element]
     (cljs.reader/read-string
      (str "#h/n [:div {:class \"card\"}
         [:div {:class \"card-title\"} \"" title "\"]

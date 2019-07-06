@@ -1,5 +1,5 @@
-(ns hiccup-next.example
-  (:require [hiccup-next.core :as hiccup]))
+(ns thumps.example
+  (:require [thumps.core :as hiccup]))
 
 
 (defn hiccup-element [& xs] xs)

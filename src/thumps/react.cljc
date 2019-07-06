@@ -1,10 +1,10 @@
-(ns hiccup-next.react
+(ns thumps.react
   (:require [clojure.string :as str]
             #?@(:cljs [["react" :as react]
                        [goog.object :as gobj]])
-            [hiccup-next.core])
-  #?(:cljs (:require-macros [hiccup-next.react]
-                            [hiccup-next.core])))
+            [thumps.core])
+  #?(:cljs (:require-macros [thumps.react]
+                            [thumps.core])))
 
 (defn keyword->str [k]
   (let [kw-ns (namespace k)
@@ -80,5 +80,5 @@
                   children)))
 
 #?(:cljs (defn interpret [vec]
-           (binding [hiccup-next.core/*hiccup-element* hiccup-element]
-             (hiccup-next.core/interpret vec))))
+           (binding [thumps.core/*hiccup-element* hiccup-element]
+             (thumps.core/interpret vec))))

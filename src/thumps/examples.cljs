@@ -1,6 +1,6 @@
-(ns hiccup-next.examples
+(ns thumps.examples
   (:require [devcards.core :as dc :include-macros true]
-            [hiccup-next.react :as r :refer [hiccup-element]]))
+            [thumps.react :as r :refer [hiccup-element]]))
 
 
 ;;
@@ -73,7 +73,7 @@
             #h/n [:li {:key n} n])]))
 
 (dc/defcard from-read-string
-  (binding [hiccup-next.core/*hiccup-element* hiccup-element]
+  (binding [thumps.core/*hiccup-element* hiccup-element]
     #h/n [:div
           (cljs.reader/read-string
            "#hiccup/next [:div {:style {:border \"1px solid #eee\"}}
@@ -97,7 +97,7 @@
                               "🚫"))]))]))
 
 (dc/defcard macro-compiler
-  (hiccup-next.core/compile
+  (thumps.core/compile
    [:div
     "foo"
     [:button {:on-click #(js/alert "baz")} "bar"]]))

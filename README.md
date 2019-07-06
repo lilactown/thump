@@ -1,4 +1,4 @@
-# hiccup-next
+# thumps
 
 ## UNDER CONSTRUCTION
 
@@ -6,8 +6,8 @@ A library for parsing hiccup forms using reader tagged literals. Currently suppo
 
 ```clojure
 (ns my-app.core
-  (:require [hiccup-next.core]
-            [hiccup-next.react :refer [hiccup-element]]))
+  (:require [thumps.core]
+            [thumps.react :refer [hiccup-element]]))
 
 (defn Mycomponent [props]
   (let [name (goog.object/get props "name")]
@@ -47,15 +47,15 @@ type at runtime.
 
 ## Usage
 
-`hiccup-next` exports two reader tags at the moment: `hiccup/next`, which parses
+`thumps` exports two reader tags at the moment: `hiccup/next`, which parses
 hiccup literals, and `h/n`, which is a shortened alias of `hiccup/next`.
 
-In order to use it, you must require the `hiccup-next.core` namespace at the top
+In order to use it, you must require the `thumps.core` namespace at the top
 level of your application:
 
 ```clojure
 (ns my-app.core
-  (:require [hiccup-next.core]
+  (:require [thumps.core]
             ...))
 ```
 
@@ -63,16 +63,16 @@ This will ensure the reader tags are registered with the ClojureScript compiler.
 
 ### With React
 
-`hiccup-next` is meant to be a general purpose hiccup syntax parsing library. An
+`thumps` is meant to be a general purpose hiccup syntax parsing library. An
 example implementation of a React extension is included with the library under
-the `hiccup-next.react` namespace.
+the `thumps.react` namespace.
 
 In order to use hiccup to create React elements, simply include the namespace
 and **refer the `hiccup-element` var**:
 
 ```
 (my-app.feature
-  (:require [hiccup-next.react :refer [hiccup-element]]))
+  (:require [thumps.react :refer [hiccup-element]]))
 ```
 
 We can then start creating React elements:
@@ -89,7 +89,7 @@ expected to be one of the following:
 
 - A keyword representing a DOM element: `:div`, `:span`, `:h1`, `:article`
 - A vanilla React component or one of the special React components like `Fragment`
-- A set of special keywords that `hiccup-next` exposes:
+- A set of special keywords that `thumps` exposes:
   - `:<>` as an alias for Fragments
 
 
@@ -129,7 +129,7 @@ Example of special cases:
 
 ### Dynamic props
 
-Using `hiccup-next`, props must _always_ be a literal map. For instance, the 
+Using `thumps`, props must _always_ be a literal map. For instance, the 
 following **will throw an error**:
 
 ```clojure

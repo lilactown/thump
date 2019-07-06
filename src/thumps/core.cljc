@@ -1,4 +1,4 @@
-(ns hiccup-next.core
+(ns thumps.core
   #?(:cljs (:require [cljs.reader]))
   (:refer-clojure :exclude [compile]))
 
@@ -13,19 +13,19 @@
 (defn ^:dynamic *hiccup-element* [el props children]
   `(~'hiccup-element ~el ~props ~children))
 
-(declare interpret)
+(declare parse)
 
 (defn maybe-parse-child [c]
   (if (vector? c)
-    (interpret c)
+    (parse c)
     c))
 
-(defn interpret [vec]
+(defn parse [vec]
   (if-not (vector? vec)
     (throw (ex-info (str vec " is not a valid hiccup vector.") {}))
     (let [[el props & children] vec
 
-          ;; interpret
+          ;; parse
           el (if (keyword? el) (keyword->str el) el)
           props? (map? props)
           children? (not (nil? (seq children)))
@@ -40,8 +40,11 @@
       (*hiccup-element* el props (map maybe-parse-child children)))))
 
 (defmacro compile [vec]
-  (interpret vec))
+  (parse vec))
+
+(defn interpret [vec]
+  (parse vec))
 
 #?(:cljs
-   (do (cljs.reader/register-tag-parser! 'hiccup/next interpret)
-       (cljs.reader/register-tag-parser! 'h/n interpret)))
+   (do (cljs.reader/register-tag-parser! 'hiccup/element parse)
+       (cljs.reader/register-tag-parser! 'h/e parse)))
