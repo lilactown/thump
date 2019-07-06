@@ -53,6 +53,11 @@
     #h/e [:div {:on-click #(js/alert "static")
                 & props} "asdf"]))
 
+(dc/defcard dynamic-props-static-override
+  (let [props {:style {:background "red" :color "yellow"}
+               :on-click #(js/alert "dynamic")}]
+    #h/e [:div {:style {:background "blue" :color "white"}
+                & props} "asdf"]))
 
 (dc/defcard classes
   #h/e [:<>
@@ -106,7 +111,3 @@
   (r/interpret [:div
                 "foo"
                 [:button {:on-click #(js/alert "baz")} "bar"]]))
-
-(dc/defcard custom-element
-  (do (r/register-element! :foo (fn [_] "foo"))
-      #h/e [:foo]))

@@ -44,7 +44,10 @@
 
 #?(:cljs (defn merge-obj+map [obj m]
            (doseq [[k v] (map map-entry->obj-entry m)]
-             (gobj/set obj k v))
+             (if (gobj/containsKey obj k)
+               ;; do nothing if object already contains key
+               nil
+               (gobj/set obj k v)))
            obj))
 
 (defn props->obj [m]
@@ -63,19 +66,15 @@
 #?(:cljs (def Fragment react/Fragment))
 
 (def custom-els
-  (atom {"<>" #?(:clj `Fragment
-                 :cljs react/Fragment)}))
-
-(defmacro register-element! [el component]
-  (swap! custom-els assoc (keyword->str el) component)
-  `(swap! custom-els assoc (keyword->str ~el) ~component))
+  {"<>" #?(:clj `Fragment
+           :cljs react/Fragment)})
 
 (defmacro hiccup-element [el props children]
-  `(create-element ~(get @custom-els el el) ~(props->obj props) ~@children))
+  `(create-element ~(get custom-els el el) ~(props->obj props) ~@children))
 
 #?(:cljs (defn hiccup-element [el props children]
            (apply react/createElement
-                  (get @custom-els el el)
+                  (get custom-els el el)
                   (props->obj props)
                   children)))
 

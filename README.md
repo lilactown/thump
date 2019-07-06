@@ -173,17 +173,17 @@ Then we can tell the reader to merge our dynamically created map with the `&` pr
 The value at the key `&` will be merged into the resulting props object at 
 runtime so that we can do this kind of dynamic props creation.
 
-Keys are merged in such a way where the values in the map created dynamically
+Keys are merged in such a way where the values in the map created statically
 take precedence. For example:
 
 ```clojure
-(let [props {:style {:color "red"}}]
-  #h/e [:div {:style {:color "blue"}
-              :on-click #(js/alert "hi") & props}
+(let [props {:style {:color "red"}
+             :on-click #(js/alert "hi")}]
+  #h/e [:div {:style {:color "blue"} & props}
               "foo"])
 ```
 
-Results in props `#js {:style #js {:color "red"} :onClick #(js/alert)}` being
+Results in props `#js {:style #js {:color "blue"} :onClick #(js/alert)}` being
 passed in to React.
 
 ### Nested hiccup
