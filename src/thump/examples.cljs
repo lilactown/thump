@@ -23,39 +23,39 @@
 ;;
 
 (defn t []
-  #hiccup/next [:div "hello"])
+  #hiccup/element [:div "hello"])
 
 (dc/defcard basic
-  #h/n [t])
+  #h/e [t])
 
 (dc/defcard basic-short
-  ;; h/n is an alias of hiccup/next
-  #h/n [:div "hi"])
+  ;; h/e is an alias of hiccup/element
+  #h/e [:div "hi"])
 
 (dc/defcard basic-nested
   ;; we don't need to tag static children
-  #h/n [:div [:span "hi"] " " [:span "bye"]])
+  #h/e [:div [:span "hi"] " " [:span "bye"]])
 
 (dc/defcard more-nested
   ;; we don't need to tag static children
-  #h/n [:div
+  #h/e [:div
         [:div {:style {:color "green"}}
          [:span "hi"]]
         " "
         [:div [:h4 "bye" [:span {:style {:color "red"}} "bye"]]]])
 
 (dc/defcard basic-props
-  #h/n [:div {:style {:background "purple"}}
+  #h/e [:div {:style {:background "purple"}}
         [:button {:on-click #(js/alert "hi")} "say hello"]])
 
 (dc/defcard dynamic-props
   (let [props {:style {:background "red" :color "yellow"}}]
-    #h/n [:div {:on-click #(js/alert "static")
+    #h/e [:div {:on-click #(js/alert "static")
                 & props} "asdf"]))
 
 
 (dc/defcard classes
-  #h/n [:<>
+  #h/e [:<>
         [:style ".a { color: green; } .b { background: purple; }"]
         [:div {:class "a"} "green"]
         [:div {:class "b"} "purple"]
@@ -63,32 +63,32 @@
 
 (dc/defcard lazy-seq-and-binding
   ;; we have to tag children that are bound dynamically
-  (let [neg-1 #h/n [:li -1]]
-    #h/n [:ul
+  (let [neg-1 #h/e [:li -1]]
+    #h/e [:ul
           neg-1
           ;; no tagging needed, static child
           [:li 0]
           ;; we also have to tag children that are generated dynamically
           (for [n [1 2 3 4 5]]
-            #h/n [:li {:key n} n])]))
+            #h/e [:li {:key n} n])]))
 
 (dc/defcard from-read-string
   (binding [thump.core/*hiccup-element* hiccup-element]
-    #h/n [:div
+    #h/e [:div
           (cljs.reader/read-string
-           "#hiccup/next [:div {:style {:border \"1px solid #eee\"}}
+           "#hiccup/element [:div {:style {:border \"1px solid #eee\"}}
                           [:span {:style {:color \"green\"}}
                           \"from reader!\"]]")
           (cljs.reader/read-string
-           "#h/n [:div
+           "#h/e [:div
                   [:style \".a2 { color: green; } .b2 { background: purple; }\"]
                   [:div {:class \"a2\"} \"green\"]
                   [:div {:class \"b2\"} \"purple\"]
                   [:div {:class [\"a2\" \"b2\"]} \"gross\"]]")
           (try (cljs.reader/read-string
-                "#h/n [:div {& props} \"asdf\"]")
+                "#h/e [:div {& props} \"asdf\"]")
                (catch js/Error e
-                 #h/n [:div {:style {:color (if (= (ex-message e) "props is not ISeqable")
+                 #h/e [:div {:style {:color (if (= (ex-message e) "props is not ISeqable")
                                               "green"
                                               "red")}}
                        (str "Dynamic props doesn't work: " (ex-message e) " "
@@ -109,4 +109,4 @@
 
 (dc/defcard custom-element
   (do (r/register-element! :foo (fn [_] "foo"))
-      #h/n [:foo]))
+      #h/e [:foo]))

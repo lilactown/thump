@@ -1,2 +1,2 @@
-{hiccup/element hiccup-next.core/interpret
- h/e hiccup-next.core/interpret}
+{hiccup/element thump.core/parse
+ h/e thump.core/parse}
