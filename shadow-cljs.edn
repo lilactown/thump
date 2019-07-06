@@ -8,7 +8,7 @@
  :builds {:examples {:target :browser
                      :output-dir "public/examples/js"
                      :asset-path "/js"
-                     :modules {:main {:entries [thumps.examples]}}
+                     :modules {:main {:entries [thump.examples]}}
                      :compiler-options {:devcards true}
                      :devtools {:http-root    "public/examples"
                                 :http-port    8800
@@ -16,6 +16,6 @@
           :benchmark-browser {:target :browser
                               :output-dir "public/benchmark/js"
                               :asset-path "/js"
-                              :modules {:main {:entries [thumps.benchmark]}}
+                              :modules {:main {:entries [thump.benchmark]}}
                               :devtools {:http-root "public/benchmark"
                                          :http-port    8801}}}}

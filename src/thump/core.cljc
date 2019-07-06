@@ -1,4 +1,4 @@
-(ns thumps.core
+(ns thump.core
   #?(:cljs (:require [cljs.reader]))
   (:refer-clojure :exclude [compile]))
 
