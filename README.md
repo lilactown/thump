@@ -130,7 +130,7 @@ Example of special cases:
 ### Dynamic props
 
 Using `thump`, props must _always_ be a literal map. For instance, the 
-following **will throw an error**:
+following **will throw a runtime error**:
 
 ```clojure
 (let [props {:style {:color "red"}}]
@@ -144,6 +144,8 @@ child element and passes it in to React's `createElement` function like so:
 (let [props {:style {:color "red"}}]
   (react/createElement "div" nil props "foo"))
 ```
+
+Since `props` is a map, not a React element, when used it will cause React to throw an "unknown element type" error.
 
 The only way to tell the tag reader to treat `props` as, well, props, is to
 write it literally within the hiccup form:
