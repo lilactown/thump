@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "shadow-cljs": "^2.8.39",
-    "showdown": "^1.9.0"
+    "showdown": "^1.9.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
